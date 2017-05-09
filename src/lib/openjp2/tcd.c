@@ -625,9 +625,8 @@ OPJ_BOOL opj_tcd_init(opj_tcd_t *p_tcd,
 
     p_tcd->tcd_image->tiles->comps = (opj_tcd_tilecomp_t *) opj_calloc(
                                          p_image->numcomps, sizeof(opj_tcd_tilecomp_t));
-    if (! p_tcd->tcd_image->tiles->comps) {
+    if (! p_tcd->tcd_image->tiles->comps)
         return OPJ_FALSE;
-    }
 
     p_tcd->tcd_image->tiles->numcomps = p_image->numcomps;
     p_tcd->tp_pos = p_cp->m_specific_param.m_enc.m_tp_pos;
