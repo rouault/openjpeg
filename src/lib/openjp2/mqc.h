@@ -68,6 +68,7 @@ typedef struct opj_mqc_state {
 /**
 MQ coder
 */
+#define MQC_PERF_OPT
 typedef struct opj_mqc {
 	OPJ_UINT32 c;
 	OPJ_UINT32 a;
