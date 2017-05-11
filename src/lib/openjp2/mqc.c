@@ -441,7 +441,7 @@ OPJ_BOOL opj_mqc_init_dec(opj_mqc_t *mqc, OPJ_BYTE *bp, OPJ_UINT32 len) {
         OPJ_UINT32 c;
 		OPJ_UINT32 *ip;
 		OPJ_BYTE *end = mqc->end - 1;
-        void* new_buffer = opj_realloc(mqc->buffer, (len + 1) * sizeof(OPJ_UINT32));
+        void* new_buffer = opj_realloc(mqc->buffer, (len + 2) * sizeof(OPJ_UINT32));
         if (! new_buffer) {
             opj_free(mqc->buffer);
             mqc->buffer = NULL;
