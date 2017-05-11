@@ -80,16 +80,10 @@ static INLINE OPJ_INT32 opj_mqc_lpsexchange(opj_mqc_t *const mqc) {
 Input a byte
 @param mqc MQC handle
 */
-#ifdef MQC_PERF_OPT
-static INLINE void opj_mqc_bytein(opj_mqc_t *const mqc) {
-	unsigned int i = *((unsigned int *) mqc->bp);
-	mqc->c += i & 0xffff00;
-	mqc->ct = i & 0x0f;
-	mqc->bp += (i >> 2) & 0x04;
-}
-#else
 static INLINE void opj_mqc_bytein(opj_mqc_t *const mqc) {
 	if (mqc->bp != mqc->end) {
+	/* From ISO 15444-1, Figure J.3 - Inserting a new byte into the C */
+	/* register in the software-conventions decoder */
 		OPJ_UINT32 c;
 		if (mqc->bp + 1 != mqc->end) {
 			c = *(mqc->bp + 1);
@@ -98,24 +92,21 @@ static INLINE void opj_mqc_bytein(opj_mqc_t *const mqc) {
 		}
 		if (*mqc->bp == 0xff) {
 			if (c > 0x8f) {
-				mqc->c += 0xff00;
 				mqc->ct = 8;
 			} else {
 				mqc->bp++;
-				mqc->c += c << 9;
+				mqc->c += 0xFE00 - (c << 9);
 				mqc->ct = 7;
 			}
 		} else {
 			mqc->bp++;
-			mqc->c += c << 8;
+			mqc->c += 0xFF00 - (c << 8);
 			mqc->ct = 8;
 		}
 	} else {
-		mqc->c += 0xff00;
 		mqc->ct = 8;
 	}
 }
-#endif
 
 /**
 Renormalize mqc->a and mqc->c while decoding
@@ -139,18 +130,24 @@ Decode a symbol
 */
 static INLINE OPJ_INT32 opj_mqc_decode(opj_mqc_t *const mqc) {
 	OPJ_INT32 d;
+	/* From ISO 15444-1, Figure J.2 - Decoding an MPS or an LPS in the */
+	/* software-conventions decoder */
 	mqc->a -= (*mqc->curctx)->qeval;
-	if ((mqc->c >> 16) < (*mqc->curctx)->qeval) {
-		d = opj_mqc_lpsexchange(mqc);
-		opj_mqc_renormd(mqc);
-	} else {
-		mqc->c -= (*mqc->curctx)->qeval << 16;
+	if ((mqc->c >> 16) < mqc->a) {
 		if ((mqc->a & 0x8000) == 0) {
 			d = opj_mqc_mpsexchange(mqc);
 			opj_mqc_renormd(mqc);
 		} else {
 			d = (OPJ_INT32)(*mqc->curctx)->mps;
 		}
+	} else {
+		/* The standard asks for Chigh = Chigh - A, so */
+		/* mqc->c = (((mqc->c >> 16) - mqc->a) << 16) | (mqc->c & 0xffff); */
+		/* but the following also works (as the similar optimization */
+		/* done in the implementation of the base procedure) */
+		mqc->c -= mqc->a << 16;
+		d = opj_mqc_lpsexchange(mqc);
+		opj_mqc_renormd(mqc);
 	}
 
 	return d;

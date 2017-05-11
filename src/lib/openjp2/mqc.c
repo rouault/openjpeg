@@ -430,56 +430,15 @@ void opj_mqc_segmark_enc(opj_mqc_t *mqc) {
 
 OPJ_BOOL opj_mqc_init_dec(opj_mqc_t *mqc, OPJ_BYTE *bp, OPJ_UINT32 len) {
 	opj_mqc_setcurctx(mqc, 0);
+	/* From ISO 15444-1, Figure J.1 - Initialization of the */
+	/* software-conventions decoder */
 	mqc->start = bp;
 	mqc->end = bp + len;
 	mqc->bp = bp;
-	if (len==0) mqc->c = 0xff << 16;
-	else mqc->c = (OPJ_UINT32)(*mqc->bp << 16);
-
-#ifdef MQC_PERF_OPT /* TODO_MSD: check this option and put in experimental */
-	{
-        OPJ_UINT32 c;
-		OPJ_UINT32 *ip;
-		OPJ_BYTE *end = mqc->end - 1;
-        void* new_buffer = opj_realloc(mqc->buffer, (len + 1) * sizeof(OPJ_UINT32));
-        if (! new_buffer) {
-            opj_free(mqc->buffer);
-            mqc->buffer = NULL;
-            return OPJ_FALSE;
-        }
-        mqc->buffer = new_buffer;
-		
-        ip = (OPJ_UINT32 *) mqc->buffer;
-
-		while (bp < end) {
-			c = *(bp + 1);
-			if (*bp == 0xff) {
-				if (c > 0x8f) {
-					break;
-				} else {
-					*ip = 0x00000017 | (c << 9);
-				}
-			} else {
-				*ip = 0x00000018 | (c << 8);
-			}
-			bp++;
-			ip++;
-		}
-
-		/* Handle last byte of data */
-		c = 0xff;
-		if (*bp == 0xff) {
-			*ip = 0x0000ff18;
-		} else {
-			bp++;
-			*ip = 0x00000018 | (c << 8);
-		}
-		ip++;
-
-		*ip = 0x0000ff08;
-		mqc->bp = mqc->buffer;
-	}
-#endif
+	if (len==0) 
+		mqc->c = ((OPJ_BYTE)(0xff ^ 0xff)) << 16;
+	else
+		mqc->c = (OPJ_UINT32)(((OPJ_BYTE)(*mqc->bp ^ 0xff)) << 16);
 	opj_mqc_bytein(mqc);
 	mqc->c <<= 7;
 	mqc->ct -= 7;
