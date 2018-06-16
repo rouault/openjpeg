@@ -10512,6 +10512,8 @@ opj_jp2_metadata_t* j2k_get_metadata(opj_j2k_t* p_j2k)
 {
     opj_jp2_metadata_t* p_metadata = opj_malloc(sizeof(opj_jp2_metadata_t));
 
+    OPJ_UNUSED(p_j2k);
+
     /* A J2K stream can not contain ASOC boxes */
     p_metadata->nbasoc = 0;
     p_metadata->asoc_info = 00;

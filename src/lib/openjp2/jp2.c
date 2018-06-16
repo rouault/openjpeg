@@ -2781,6 +2781,7 @@ static void opj_jp2_asoc_destroy(opj_jp2_asoc_t *p_asoc, OPJ_UINT32 num)
         asoc->xml_buf = 00;
         asoc->xml_len = 0;
     }
+    opj_free(p_asoc);
 }
 
 static OPJ_BOOL opj_jp2_skip_jp2c(opj_jp2_t *jp2,

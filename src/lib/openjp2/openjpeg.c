@@ -1048,9 +1048,11 @@ OPJ_API void opj_destroy_jp2_metadata(opj_jp2_metadata_t **p_jp2_meta_data)
     if (*p_jp2_meta_data) {
         if ((*p_jp2_meta_data)->nbasoc) {
             opj_asoc_destroy((*p_jp2_meta_data)->asoc_info, (*p_jp2_meta_data)->nbasoc);
+            opj_free((*p_jp2_meta_data)->asoc_info);
             (*p_jp2_meta_data)->asoc_info = 00;
             (*p_jp2_meta_data)->nbasoc = 0;
         }
+        opj_free(*p_jp2_meta_data);
         (*p_jp2_meta_data) = NULL;
     }
 }
