@@ -188,7 +188,7 @@ opj_codec_t* OPJ_CALLCONV opj_create_decompress(OPJ_CODEC_FORMAT p_format)
                                             void*)) j2k_get_cstr_index;
 
         l_codec->opj_get_jp2_metadata = (opj_jp2_metadata_t* (*)(
-                                            void*)) j2k_get_metadata;
+                                             void*)) j2k_get_metadata;
 
         l_codec->m_codec_data.m_decompression.opj_decode =
             (OPJ_BOOL(*)(void *,
@@ -278,7 +278,7 @@ opj_codec_t* OPJ_CALLCONV opj_create_decompress(OPJ_CODEC_FORMAT p_format)
                                             void*)) jp2_get_cstr_index;
 
         l_codec->opj_get_jp2_metadata = (opj_jp2_metadata_t* (*)(
-                                            void*)) jp2_get_metadata;
+                                             void*)) jp2_get_metadata;
 
         l_codec->m_codec_data.m_decompression.opj_decode =
             (OPJ_BOOL(*)(void *,
@@ -967,7 +967,8 @@ void OPJ_CALLCONV opj_dump_associated_data(
     if (jp2_info && jp2_info->asoc_info) {
         fprintf(output_stream, "\n\nAssociated data: {\n");
         for (i = 0; i < jp2_info->nbasoc; i++) {
-            fprintf(output_stream, "\tlabel=%s, xml/data=", (char*) jp2_info->asoc_info[i].label);
+            fprintf(output_stream, "\tlabel=%s, xml/data=",
+                    (char*) jp2_info->asoc_info[i].label);
             if (jp2_info->asoc_info[i].xml_buf) {
                 fprintf(output_stream, "%s\n", (char*) jp2_info->asoc_info[i].xml_buf);
             } else {
@@ -1035,23 +1036,23 @@ opj_codestream_index_t * OPJ_CALLCONV opj_get_cstr_index(opj_codec_t *p_codec)
 
 opj_jp2_metadata_t * OPJ_CALLCONV opj_get_jp2_metadata(opj_codec_t *p_codec)
 {
-   if (p_codec) {
-     opj_codec_private_t* l_codec = (opj_codec_private_t*) p_codec;
-     return l_codec->opj_get_jp2_metadata(l_codec->m_codec);
-  }
-  return NULL;
+    if (p_codec) {
+        opj_codec_private_t* l_codec = (opj_codec_private_t*) p_codec;
+        return l_codec->opj_get_jp2_metadata(l_codec->m_codec);
+    }
+    return NULL;
 }
 
 OPJ_API void opj_destroy_jp2_metadata(opj_jp2_metadata_t **p_jp2_meta_data)
 {
-  if (*p_jp2_meta_data) {
-    if ((*p_jp2_meta_data)->nbasoc) {
-      opj_asoc_destroy((*p_jp2_meta_data)->asoc_info, (*p_jp2_meta_data)->nbasoc);
-      (*p_jp2_meta_data)->asoc_info = 00;
-      (*p_jp2_meta_data)->nbasoc = 0;
+    if (*p_jp2_meta_data) {
+        if ((*p_jp2_meta_data)->nbasoc) {
+            opj_asoc_destroy((*p_jp2_meta_data)->asoc_info, (*p_jp2_meta_data)->nbasoc);
+            (*p_jp2_meta_data)->asoc_info = 00;
+            (*p_jp2_meta_data)->nbasoc = 0;
+        }
+        (*p_jp2_meta_data) = NULL;
     }
-    (*p_jp2_meta_data) = NULL;
-  }
 }
 
 void OPJ_CALLCONV opj_destroy_cstr_index(opj_codestream_index_t **p_cstr_index)

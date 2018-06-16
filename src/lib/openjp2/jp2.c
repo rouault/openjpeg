@@ -2716,7 +2716,7 @@ static OPJ_BOOL opj_jp2_read_asoc(opj_jp2_t *jp2,
     asoc = &(jp2->asoc[jp2->numasoc - 1]);
 
     /* TODO: This is not correct if a parent asoc contains multiple child asocs! */
-    asoc->level = jp2->numasoc - 1; 
+    asoc->level = jp2->numasoc - 1;
     asoc->label_length = asoc_size + 1;
     asoc->label = opj_malloc(asoc->label_length);
     memcpy(asoc->label, p_header_data, asoc_size);
@@ -3387,21 +3387,23 @@ opj_codestream_info_v2_t* jp2_get_cstr_info(opj_jp2_t* p_jp2)
     return p_info;
 }
 
-opj_jp2_metadata_t* jp2_get_metadata( opj_jp2_t* p_jp2 )
+opj_jp2_metadata_t* jp2_get_metadata(opj_jp2_t* p_jp2)
 {
     opj_jp2_metadata_t* p_metadata = opj_malloc(sizeof(opj_jp2_metadata_t));
     jp2_copy_asoc_data(p_jp2, p_metadata);
     return p_metadata;
 }
 
-OPJ_BOOL jp2_copy_asoc_data( opj_jp2_t* p_jp2, opj_jp2_metadata_t* p_jp2_metadata )
+OPJ_BOOL jp2_copy_asoc_data(opj_jp2_t* p_jp2,
+                            opj_jp2_metadata_t* p_jp2_metadata)
 {
     OPJ_UINT32 i;
     opj_jp2_asoc_t *asoc, *to_asoc;
 
     p_jp2_metadata->nbasoc = p_jp2->numasoc;
-    p_jp2_metadata->asoc_info = opj_malloc(p_jp2_metadata->nbasoc * sizeof(opj_jp2_asoc_t));
-    for (i=0; i<p_jp2_metadata->nbasoc; i++) {
+    p_jp2_metadata->asoc_info = opj_malloc(p_jp2_metadata->nbasoc * sizeof(
+            opj_jp2_asoc_t));
+    for (i = 0; i < p_jp2_metadata->nbasoc; i++) {
         asoc = &(p_jp2->asoc[i]);
         to_asoc = &(p_jp2_metadata->asoc_info[i]);
         to_asoc->level = asoc->level;
@@ -3414,7 +3416,7 @@ OPJ_BOOL jp2_copy_asoc_data( opj_jp2_t* p_jp2, opj_jp2_metadata_t* p_jp2_metadat
             to_asoc->label = 00;
         }
         if (asoc->xml_len && asoc->xml_buf) {
-            to_asoc->xml_buf = opj_malloc( to_asoc->xml_len);
+            to_asoc->xml_buf = opj_malloc(to_asoc->xml_len);
             memcpy(to_asoc->xml_buf, asoc->xml_buf, to_asoc->xml_len);
         } else {
             to_asoc->xml_buf = 00;

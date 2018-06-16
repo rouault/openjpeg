@@ -1044,11 +1044,11 @@ typedef struct opj_codestream_index {
 
 /**
  * Info structure of the JP2 file
- * Includes associated data (ASOC boxes) if available in JP2 stream. See opj_dump for sample code. 
+ * Includes associated data (ASOC boxes) if available in JP2 stream. See opj_dump for sample code.
  */
 typedef struct opj_jp2_metadata {
-    
-     /** Number of associated data boxes*/
+
+    /** Number of associated data boxes*/
     OPJ_UINT32 nbasoc;
 
     /** Associated data, e.g. GML geoinformation */
@@ -1659,7 +1659,7 @@ OPJ_API void OPJ_CALLCONV opj_destroy_cstr_index(opj_codestream_index_t
 
 
 /**
- * Get the JP2 metadata file information from the codec 
+ * Get the JP2 metadata file information from the codec
  *
  * @param   p_codec         the jpeg2000 codec.
  *
@@ -1670,7 +1670,7 @@ OPJ_API opj_jp2_metadata_t* OPJ_CALLCONV opj_get_jp2_metadata(
     opj_codec_t *p_codec);
 
 /**
- * Destroy the JP2 metadata file information 
+ * Destroy the JP2 metadata file information
  */
 OPJ_API void opj_destroy_jp2_metadata(opj_jp2_metadata_t **p_jp2_meta_data);
 

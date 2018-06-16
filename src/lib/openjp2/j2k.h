@@ -801,7 +801,7 @@ opj_codestream_info_v2_t* j2k_get_cstr_info(opj_j2k_t* p_j2k);
  *
  *@return   The metadata extract from the jpg2000 codec
  */
- opj_jp2_metadata_t* j2k_get_metadata( opj_j2k_t* p_j2k );
+opj_jp2_metadata_t* j2k_get_metadata(opj_j2k_t* p_j2k);
 
 /**
  * Get the codestream index from a JPEG2000 codec.
