@@ -1739,7 +1739,7 @@ static OPJ_UINT32 opj_j2k_get_num_tp(opj_cp_t *cp, OPJ_UINT32 pino,
     assert(l_current_poc != 0);
 
     /* get the progression order as a character string */
-    prog = opj_j2k_convert_progression_order(tcp->prg);
+        prog = opj_j2k_convert_progression_order(tcp->prg);
     assert(strlen(prog) > 0);
 
     if (cp->m_specific_param.m_enc.m_tp_on == 1) {
