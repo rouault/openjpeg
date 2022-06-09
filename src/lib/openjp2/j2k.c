@@ -10971,7 +10971,7 @@ static OPJ_BOOL opj_j2k_read_SQcd_SQcc(opj_j2k_t *p_j2k,
                 l_tccp->stepsizes[l_band_no].mant = 0;
             }
         }
-        *p_header_size = *p_header_size - l_num_band;
+            *p_header_size = *p_header_size - l_num_band;
     } else {
         for (l_band_no = 0; l_band_no < l_num_band; l_band_no++) {
             opj_read_bytes(l_current_ptr, &l_tmp, 2);                       /* SPqcx_i */
